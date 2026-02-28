@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ibrahim Tayyab Memon — Full-Stack Developer Portfolio</title>
+  <meta name="description"
+    content="Passionate full-stack developer specializing in Next.js, TypeScript, React.js, and modern web technologies. Transforming ideas into scalable digital solutions.">
+  <meta name="keywords"
+    content="Ibrahim Tayyab Memon, Full Stack Developer, Next.js, TypeScript, React, Web Developer, Portfolio">
+  <meta name="author" content="Ibrahim Tayyab Memon">
+  <meta property="og:title" content="Ibrahim Tayyab Memon — Full-Stack Developer">
+  <meta property="og:description" content="Passionate full-stack developer specializing in modern web technologies.">
+  <meta property="og:type" content="website">
+  <link rel="icon" href="assets/images/favicon.ico">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body class="dark-mode">
+
+  <!-- ── Scroll Progress Bar ── -->
+  <div class="scroll-progress-container" aria-hidden="true">
+    <div class="scroll-progress-bar" id="scrollProgressBar"></div>
+  </div>
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="navbar-inner">
+      <div class="navbar-logo">I T boy</div>
+
+      <div class="navbar-right">
+        <!-- Desktop nav links (hidden on mobile) -->
+        <ul class="nav-links" id="navLinks">
+          <li><button onclick="scrollToSection('home')" data-nav="0">home</button></li>
+          <li><button onclick="scrollToSection('skills')" data-nav="1">skills</button></li>
+          <li><button onclick="scrollToSection('about')" data-nav="2">about</button></li>
+          <li><button onclick="scrollToSection('services')" data-nav="3">services</button></li>
+          <li><button onclick="scrollToSection('contact')" data-nav="4">contact</button></li>
+        </ul>
+
+        <!-- Theme toggle -->
+        <button class="theme-toggle" id="themeToggle" onclick="toggleDarkMode()" aria-label="Toggle light/dark theme">
+          <img src="assets/images/sun.png" alt="" id="themeIcon" width="24" height="24">
+        </button>
+
+        <!-- Language dropdown -->
+        <div class="language-dropdown">
+          <button class="language-btn" id="languageBtn" onclick="toggleLanguageMenu()" aria-haspopup="true">English
+            ▼</button>
+          <div class="language-menu" id="languageMenu" role="menu">
+            <button class="active" data-lang="english" onclick="setLanguage('english')" role="menuitem">English</button>
+            <button data-lang="urdu" onclick="setLanguage('urdu')" role="menuitem">اردو</button>
+            <button data-lang="spanish" onclick="setLanguage('spanish')" role="menuitem">Español</button>
+            <button data-lang="french" onclick="setLanguage('french')" role="menuitem">Français</button>
+            <button data-lang="german" onclick="setLanguage('german')" role="menuitem">Deutsch</button>
+            <button data-lang="arabic" onclick="setLanguage('arabic')" role="menuitem">العربية</button>
+            <button data-lang="chinese" onclick="setLanguage('chinese')" role="menuitem">中文</button>
+          </div>
+        </div>
+
+        <!-- Hamburger (mobile only) -->
+        <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileMenu()" aria-label="Open menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ── Mobile Menu Overlay ── -->
+  <div class="mobile-menu" id="mobileMenu">
+    <button onclick="mobileScrollTo('home')" data-mobnav="0">home</button>
+    <button onclick="mobileScrollTo('skills')" data-mobnav="1">skills</button>
+    <button onclick="mobileScrollTo('about')" data-mobnav="2">about</button>
+    <button onclick="mobileScrollTo('services')" data-mobnav="3">services</button>
+    <button onclick="mobileScrollTo('contact')" data-mobnav="4">contact</button>
+  </div>
+
+  <!-- ====== HERO / PROFILE SECTION ====== -->
+  <section id="home" class="hero-section">
+    <div class="container hero-content">
+      <div class="profile-image-wrapper">
+        <div class="profile-glow" aria-hidden="true"></div>
+        <img src="assets/images/ib.png" alt="Ibrahim Tayyab Memon" class="profile-image" loading="eager" width="256"
+          height="256">
+      </div>
+      <div class="profile-details">
+        <h1 class="profile-name" id="profileName">
+          Ibrahim Tayyab Memon
+          <span class="profile-nickname" id="profileNickname">"(I T)"</span>
+        </h1>
+        <h2 class="profile-title">
+          <span id="iAmText">I'm a</span> <span class="rotating-text" id="rotatingText">Designer</span>
+        </h2>
+        <p class="profile-description" id="profileDesc">Passionate full-stack developer specializing in modern web
+          technologies. Transforming ideas into scalable digital solutions with cutting-edge tools.</p>
+        <div class="social-links">
+          <a href="https://github.com/Ibrahim-Tayyab?tab=repositories" class="social-link" aria-label="GitHub"
+            target="_blank" rel="noopener noreferrer">
+            <img src="assets/images/222.png" alt="" class="social-icon" loading="lazy" width="32" height="32">
+          </a>
+          <a href="https://www.linkedin.com/in/ibrahim-twyyab-9a86022b6/" class="social-link" aria-label="LinkedIn"
+            target="_blank" rel="noopener noreferrer">
+            <img src="assets/images/LinkedIn.jpeg" alt="" class="social-icon" loading="lazy" width="32" height="32">
+          </a>
+          <a href="https://facebook.com" class="social-link" aria-label="Facebook" target="_blank"
+            rel="noopener noreferrer">
+            <img src="assets/images/facebook-removebg-preview.png" alt="" class="social-icon" loading="lazy" width="32"
+              height="32">
+          </a>
+        </div>
+        <div class="cta-buttons">
+          <a href="contact.html" class="btn-primary">
+            <span class="btn-text" id="hireMeBtn">Hire Me</span>
+            <div class="btn-overlay" aria-hidden="true"></div>
+          </a>
+          <button class="btn-secondary" onclick="downloadCV()">
+            <span class="btn-text" id="downloadCVBtn">Download CV</span>
+            <div class="btn-overlay" aria-hidden="true"></div>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SKILLS SECTION ====== -->
+  <section id="skills" class="skills-section">
+    <div class="container text-center">
+      <h2 class="section-title" id="skillsTitle">Skills</h2>
+      <div class="skills-grid" id="skillsGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== ABOUT SECTION ====== -->
+  <section id="about" class="about-section">
+    <div class="container text-center">
+      <h2 class="section-title" id="aboutTitle">About Me</h2>
+      <div class="about-content">
+        <div class="about-subsection">
+          <p>
+            <span class="about-info-item" id="aboutLocation">📍 Pakistan</span>
+            <span class="about-info-item" id="aboutEducation">🎓 11th-Grade Student</span>
+            <span class="about-info-item" id="aboutProfession">💻 Next.js &amp; TypeScript Developer</span>
+          </p>
+        </div>
+        <div class="about-subsection">
+          <h3 id="techExpertiseTitle">Technical Expertise</h3>
+          <ul id="techList">
+            <li>Next.js — Experienced in building modern, scalable web applications</li>
+            <li>TypeScript — Strong understanding of type safety and OOP principles</li>
+            <li>React.js — Proficient in component-based architectures</li>
+            <li>Tailwind CSS — Efficient utility-first styling implementation</li>
+            <li>API Integration — REST APIs and dynamic data fetching</li>
+          </ul>
+        </div>
+        <div class="about-subsection">
+          <h3 id="experienceTitle">Experience</h3>
+          <div class="experience-card">
+            <h4 id="experienceDesc">Web Developer (Freelance / Projects)</h4>
+            <ul id="experienceList">
+              <li>Developed multiple web applications using Next.js &amp; TypeScript</li>
+              <li>Implemented responsive UI with Tailwind CSS</li>
+              <li>Integrated REST APIs for dynamic content</li>
+            </ul>
+          </div>
+        </div>
+        <div class="about-subsection">
+          <h3 id="projectsTitle">Key Projects</h3>
+          <div class="projects-grid" id="projectsGrid">
+            <a href="https://amreli-woodssss.netlify.app/" target="_blank" rel="noopener noreferrer"
+              class="project-card">
+              <div class="project-image-wrapper">
+                <img src="assets/images/Screenshot_1.jpg" alt="E-commerce Platform screenshot" class="project-image"
+                  loading="lazy">
+                <div class="project-image-overlay" aria-hidden="true"></div>
+              </div>
+              <div class="project-info">
+                <h4 id="project1Title">🛍️ E-Commerce Platform</h4>
+                <p id="project1Desc">Next.js, TypeScript, Tailwind CSS — Full shopping functionality</p>
+              </div>
+            </a>
+            <a href="https://nex-tool.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-card">
+              <div class="project-image-wrapper">
+                <img src="assets/images/Screenshot_2.png" alt="NexTool screenshot" class="project-image" loading="lazy">
+                <div class="project-image-overlay" aria-hidden="true"></div>
+              </div>
+              <div class="project-info">
+                <h4 id="project2Title">🛠️ NexTool — Web Tools Hub</h4>
+                <p id="project2Desc">50+ free web tools for developers and creators — boost productivity with NexTool
+                </p>
+              </div>
+            </a>
+            <a href="https://assignment-1-gamma-five.vercel.app/" target="_blank" rel="noopener noreferrer"
+              class="project-card">
+              <div class="project-image-wrapper">
+                <img src="assets/images/Screenshot_3.jpg" alt="Assignment project screenshot" class="project-image"
+                  loading="lazy">
+                <div class="project-image-overlay" aria-hidden="true"></div>
+              </div>
+              <div class="project-info">
+                <h4 id="project3Title">📊 Assignment</h4>
+                <p id="project3Desc">This is my first assignment</p>
+              </div>
+            </a>
+          </div>
+        </div>
+        <div class="about-subsection journey-section">
+          <h3 id="journeyTitle">Journey &amp; Aspirations</h3>
+          <p class="journey-quote" id="journeyQuote">Balancing school with coding taught me time management and
+            problem-solving.</p>
+          <p class="future-focus" id="futureFocus">Future Focus: Advancing full-stack capabilities and contributing to
+            open-source projects.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== SERVICES SECTION ====== -->
+  <section id="services" class="services-section">
+    <div class="container">
+      <h2 class="section-title" id="servicesTitle">Services</h2>
+      <div class="services-grid" id="servicesGrid">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ====== CONTACT SECTION ====== -->
+  <section id="contact" class="contact-section">
+    <div class="contact-bg-orb-1" aria-hidden="true"></div>
+    <div class="contact-bg-orb-2" aria-hidden="true"></div>
+    <div class="container">
+      <div class="contact-header">
+        <img src="assets/images/download.jpeg" alt="" class="contact-header-icon" width="48" height="48">
+        <span class="contact-header-text" id="contactTitle">Get in Touch</span>
+      </div>
+      <div class="contact-grid">
+        <div>
+          <p class="contact-info-desc" id="contactDesc">I'd love to hear about your project! Let's connect! 💡</p>
+          <div class="contact-links">
+            <a href="mailto:ibrahimtayyab696@gmail.com" class="contact-link">
+              <img src="assets/images/email.png" alt="" class="contact-link-icon" width="28" height="28">
+              <span class="contact-link-text">ibrahimtayyab696@gmail.com</span>
+            </a>
+            <a href="tel:+92318337546" class="contact-link">
+              <img src="assets/images/phone.png" alt="" class="contact-link-icon" width="28" height="28">
+              <span class="contact-link-text">+92 318 337 546</span>
+            </a>
+            <a href="https://www.linkedin.com/in/ibrahim-twyyab-9a86022b6/" class="contact-link" target="_blank"
+              rel="noopener noreferrer">
+              <img src="assets/images/LinkedIn.jpeg" alt="" class="contact-link-icon" width="28" height="28">
+              <span class="contact-link-text" id="linkedinText">LinkedIn Profile</span>
+            </a>
+            <a href="https://github.com/Ibrahim-Tayyab?tab=repositories" class="contact-link" target="_blank"
+              rel="noopener noreferrer">
+              <img src="assets/images/download.jpeg" alt="" class="contact-link-icon" width="28" height="28">
+              <span class="contact-link-text" id="githubText">GitHub Portfolio</span>
+            </a>
+          </div>
+        </div>
+        <form class="contact-form" onsubmit="return false;">
+          <div>
+            <input type="text" class="contact-input" id="contactName" data-field="name">
+          </div>
+          <div>
+            <input type="email" class="contact-input" id="contactEmail" data-field="email">
+          </div>
+          <div>
+            <textarea class="contact-textarea" id="contactMessage" rows="4" data-field="message"></textarea>
+          </div>
+          <a href="contact.html" class="contact-submit-btn"
+            style="text-align:center; display:block; text-decoration:none;">
+            <span id="sendMessageBtn">Send Message 🚀</span>
+          </a>
+        </form>
+      </div>
+      <p class="response-time" id="responseTime">I'll get back to you within 24 hours! ⏳</p>
+    </div>
+  </section>
+
+  <!-- ====== FOOTER ====== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">
+            <img src="assets/images/developer-.png" alt="" class="footer-brand-icon" width="32" height="32">
+            <span class="footer-brand-name" id="footerName">Ibrahim Tayyab Memon</span>
+          </div>
+          <div class="footer-links" id="footerLinks1">
+            <a href="#" id="footerSolutions">Solutions</a>
+            <a href="#" id="footerUseCases">Use Cases</a>
+            <a href="#" id="footerResources">Resources</a>
+            <a href="#" id="footerCompany">Company</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h3 id="footerExplore">Explore</h3>
+          <div class="footer-links" id="footerLinks2">
+            <a href="#about" id="footerAbout">About</a>
+            <a href="#" id="footerCareers">Careers</a>
+            <a href="#contact" id="footerContactUs">Contact Us</a>
+            <a href="#" id="footerPrivacy">Privacy Policy</a>
+          </div>
+        </div>
+        <div class="footer-col">
+          <h3 id="footerSubscribeTitle">Subscribe</h3>
+          <form class="footer-subscribe" onsubmit="return false;">
+            <input type="text" id="footerSubName" placeholder="Your Name">
+            <input type="email" id="footerSubEmail" placeholder="Your Email">
+            <button type="submit" class="footer-subscribe-btn" id="footerSubscribeBtn">Subscribe</button>
+          </form>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright" id="footerCopyright">© 2025 Ibrahim Tayyab Memon (I T). All Rights Reserved.</p>
+        <div class="footer-social">
+          <a href="https://github.com/Ibrahim-Tayyab?tab=repositories" target="_blank" rel="noopener noreferrer"
+            aria-label="GitHub"><img src="assets/images/111.png" alt="" width="24" height="24"></a>
+          <a href="https://www.linkedin.com/in/ibrahim-twyyab-9a86022b6/" target="_blank" rel="noopener noreferrer"
+            aria-label="LinkedIn"><img src="assets/images/LinkedIn.jpeg" alt="" width="24" height="24"></a>
+          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><img
+              src="assets/images/facebook-removebg-preview.png" alt="" width="24" height="24"></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>
