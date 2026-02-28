@@ -128,8 +128,11 @@
     <div class="container text-center">
       <h2 class="section-title" id="skillsTitle">Skills</h2>
       <div class="skills-grid" id="skillsGrid">
-        <!-- Populated by JS -->
+        <!-- Populated by JS from data.js SKILLS array -->
       </div>
+      <button class="show-more-btn" id="showMoreBtn" onclick="toggleShowMore()">
+        Show More ▼
+      </button>
     </div>
   </section>
 
@@ -169,41 +172,7 @@
         <div class="about-subsection">
           <h3 id="projectsTitle">Key Projects</h3>
           <div class="projects-grid" id="projectsGrid">
-            <a href="https://amreli-woodssss.netlify.app/" target="_blank" rel="noopener noreferrer"
-              class="project-card">
-              <div class="project-image-wrapper">
-                <img src="assets/images/Screenshot_1.jpg" alt="E-commerce Platform screenshot" class="project-image"
-                  loading="lazy">
-                <div class="project-image-overlay" aria-hidden="true"></div>
-              </div>
-              <div class="project-info">
-                <h4 id="project1Title">🛍️ E-Commerce Platform</h4>
-                <p id="project1Desc">Next.js, TypeScript, Tailwind CSS — Full shopping functionality</p>
-              </div>
-            </a>
-            <a href="https://nex-tool.vercel.app/" target="_blank" rel="noopener noreferrer" class="project-card">
-              <div class="project-image-wrapper">
-                <img src="assets/images/Screenshot_2.png" alt="NexTool screenshot" class="project-image" loading="lazy">
-                <div class="project-image-overlay" aria-hidden="true"></div>
-              </div>
-              <div class="project-info">
-                <h4 id="project2Title">🛠️ NexTool — Web Tools Hub</h4>
-                <p id="project2Desc">50+ free web tools for developers and creators — boost productivity with NexTool
-                </p>
-              </div>
-            </a>
-            <a href="https://assignment-1-gamma-five.vercel.app/" target="_blank" rel="noopener noreferrer"
-              class="project-card">
-              <div class="project-image-wrapper">
-                <img src="assets/images/Screenshot_3.jpg" alt="Assignment project screenshot" class="project-image"
-                  loading="lazy">
-                <div class="project-image-overlay" aria-hidden="true"></div>
-              </div>
-              <div class="project-info">
-                <h4 id="project3Title">📊 Assignment</h4>
-                <p id="project3Desc">This is my first assignment</p>
-              </div>
-            </a>
+            <!-- Populated by JS from data.js PROJECTS array -->
           </div>
         </div>
         <div class="about-subsection journey-section">
@@ -328,6 +297,7 @@
     </div>
   </footer>
 
+  <script src="js/data.js"></script>
   <script src="js/app.js"></script>
 </body>
 

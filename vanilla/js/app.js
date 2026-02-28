@@ -1,23 +1,26 @@
 /* ============================================================
    Ibrahim Tayyab Memon — Portfolio
-   Main Page JavaScript (v2 — Fully Audited)
+   Main Page JavaScript (v3 — Dynamic Skills & Projects)
 
+   DEPENDENCIES: data.js must be loaded BEFORE this file.
+   
    SECTIONS:
-   1.  Content Data (7 languages — professionally spell-checked)
-   2.  Skills Data
-   3.  State
-   4.  Initialization (DOMContentLoaded)
-   5.  Skills Rendering
-   6.  Services Rendering
-   7.  Language System  (setLanguage / updatePlaceholders)
-   8.  Dark / Light Mode
-   9.  Language Menu
-   10. Mobile Hamburger Menu
-   11. Scroll Handling (direction-aware navbar + progress bar)
-   12. Smooth Scroll
-   13. Text Rotation (Designer ↔ Developer)
-   14. CV Download
-   15. Scroll-Triggered Animations (IntersectionObserver)
+   1.  Content Data (7 languages)
+   2.  State
+   3.  Initialization (DOMContentLoaded)
+   4.  renderSkills() — reads from SKILLS array (data.js)
+   5.  renderProjects() — reads from PROJECTS array (data.js)
+   6.  Show More / Show Less Toggle
+   7.  renderServices()
+   8.  Language System  (setLanguage / updatePlaceholders)
+   9.  Dark / Light Mode
+   10. Language Menu
+   11. Mobile Hamburger Menu
+   12. Scroll Handling (direction-aware navbar + progress bar)
+   13. Smooth Scroll
+   14. Text Rotation (Designer ↔ Developer)
+   15. CV Download
+   16. Scroll-Triggered Animations (IntersectionObserver)
    ============================================================ */
 
 
@@ -26,7 +29,6 @@
    ────────────────────────────────────────────────────────────── */
 const content = {
 
-    /* ── English ── */
     english: {
         name: "Ibrahim Tayyab Memon",
         nickname: "(I T)",
@@ -35,12 +37,8 @@ const content = {
         skillsTitle: "Skills",
         aboutTitle: "About Me",
         aboutDetails: {
-            location: "Pakistan",
-            education: "11th-Grade Student",
-            profession: "Next.js & TypeScript Developer",
-            techExpertise: "Technical Expertise",
-            experience: "Experience",
-            projects: "Key Projects",
+            location: "Pakistan", education: "11th-Grade Student", profession: "Next.js & TypeScript Developer",
+            techExpertise: "Technical Expertise", experience: "Experience", projects: "Key Projects",
             journey: "Journey & Aspirations",
             techList: [
                 "Next.js — Experienced in building modern, scalable web applications",
@@ -67,21 +65,11 @@ const content = {
         ],
         contactTitle: "Get in Touch",
         contactDesc: "I'd love to hear about your project! Let's connect! 💡",
-        hireMe: "Hire Me",
-        downloadCV: "Download CV",
-        sendMessage: "Send Message",
+        hireMe: "Hire Me", downloadCV: "Download CV", sendMessage: "Send Message",
         responseTime: "I'll get back to you within 24 hours! ⏳",
         placeholders: { name: "Your Name", email: "Your Email", message: "Your Message" },
-        iAmText: "I'm a",
-        textRotation: ["Designer", "Developer"],
-        linkedinText: "LinkedIn Profile",
-        githubText: "GitHub Portfolio",
-        project1Title: "🛍️ E-Commerce Platform",
-        project1Desc: "Next.js, TypeScript, Tailwind CSS — Full shopping functionality",
-        project2Title: "🛠️ NexTool — Web Tools Hub",
-        project2Desc: "50+ free web tools for developers and creators — boost productivity with NexTool",
-        project3Title: "📊 Assignment",
-        project3Desc: "This is my first assignment",
+        iAmText: "I'm a", textRotation: ["Designer", "Developer"],
+        linkedinText: "LinkedIn Profile", githubText: "GitHub Portfolio",
         footer: {
             solutions: "Solutions", useCases: "Use Cases", resources: "Resources", company: "Company",
             explore: "Explore", about: "About", careers: "Careers", contactUs: "Contact Us",
@@ -91,21 +79,14 @@ const content = {
         },
     },
 
-    /* ── Urdu ── */
     urdu: {
-        name: "ابراہیم طیّب میمن",
-        nickname: "(آئی ٹی)",
+        name: "ابراہیم طیّب میمن", nickname: "(آئی ٹی)",
         description: "جدید ویب ٹیکنالوجیز میں مہارت رکھنے والا پُرجوش فُل اسٹیک ڈویلپر۔ جدید ترین ٹولز کے ذریعے خیالات کو قابلِ توسیع ڈیجیٹل حل میں بدلنا۔",
         navItems: ["ہوم", "مہارتیں", "تعارف", "خدمات", "رابطہ"],
-        skillsTitle: "مہارتیں",
-        aboutTitle: "میرا تعارف",
+        skillsTitle: "مہارتیں", aboutTitle: "میرا تعارف",
         aboutDetails: {
-            location: "پاکستان",
-            education: "گیارہویں جماعت کا طالبِ علم",
-            profession: "Next.js اور TypeScript ڈویلپر",
-            techExpertise: "تکنیکی مہارت",
-            experience: "تجربہ",
-            projects: "اہم پروجیکٹس",
+            location: "پاکستان", education: "گیارہویں جماعت کا طالبِ علم", profession: "Next.js اور TypeScript ڈویلپر",
+            techExpertise: "تکنیکی مہارت", experience: "تجربہ", projects: "اہم پروجیکٹس",
             journey: "سفر اور عزائم",
             techList: [
                 "Next.js — جدید، قابلِ توسیع ویب ایپلیکیشنز بنانے کا تجربہ",
@@ -132,21 +113,11 @@ const content = {
         ],
         contactTitle: "رابطہ کریں",
         contactDesc: "میں آپ کے پروجیکٹ کے بارے میں جاننا چاہوں گا! آئیے رابطہ کرتے ہیں! 💡",
-        hireMe: "مجھے ملازمت دیں",
-        downloadCV: "سی وی ڈاؤن لوڈ کریں",
-        sendMessage: "پیغام بھیجیں",
+        hireMe: "مجھے ملازمت دیں", downloadCV: "سی وی ڈاؤن لوڈ کریں", sendMessage: "پیغام بھیجیں",
         responseTime: "میں 24 گھنٹوں کے اندر جواب دوں گا! ⏳",
         placeholders: { name: "آپ کا نام", email: "آپ کا ای میل", message: "آپ کا پیغام" },
-        iAmText: "میں ایک",
-        textRotation: ["ڈیزائنر", "ڈویلپر"],
-        linkedinText: "لنکڈاِن پروفائل",
-        githubText: "گِٹ ہب پورٹ فولیو",
-        project1Title: "🛍️ ای کامرس پلیٹ فارم",
-        project1Desc: "Next.js، TypeScript، Tailwind CSS — مکمل خریداری کی فعالیت",
-        project2Title: "🛠️ نیکس ٹول — ویب ٹولز ہب",
-        project2Desc: "ڈویلپرز اور تخلیق کاروں کے لیے 50 سے زائد مفت ویب ٹولز",
-        project3Title: "📊 اسائنمنٹ",
-        project3Desc: "یہ میری پہلی اسائنمنٹ ہے",
+        iAmText: "میں ایک", textRotation: ["ڈیزائنر", "ڈویلپر"],
+        linkedinText: "لنکڈاِن پروفائل", githubText: "گِٹ ہب پورٹ فولیو",
         footer: {
             solutions: "حل", useCases: "استعمال", resources: "وسائل", company: "کمپنی",
             explore: "دریافت کریں", about: "تعارف", careers: "کیریئرز",
@@ -156,21 +127,14 @@ const content = {
         },
     },
 
-    /* ── Spanish ── */
     spanish: {
-        name: "Ibrahim Tayyab Memon",
-        nickname: "(I T)",
+        name: "Ibrahim Tayyab Memon", nickname: "(I T)",
         description: "Desarrollador full-stack apasionado, especializado en tecnologías web modernas. Transformo ideas en soluciones digitales escalables con herramientas de vanguardia.",
         navItems: ["inicio", "habilidades", "sobre mí", "servicios", "contacto"],
-        skillsTitle: "Habilidades",
-        aboutTitle: "Sobre Mí",
+        skillsTitle: "Habilidades", aboutTitle: "Sobre Mí",
         aboutDetails: {
-            location: "Pakistán",
-            education: "Estudiante de 11.° grado",
-            profession: "Desarrollador Next.js y TypeScript",
-            techExpertise: "Experiencia Técnica",
-            experience: "Experiencia",
-            projects: "Proyectos Clave",
+            location: "Pakistán", education: "Estudiante de 11.° grado", profession: "Desarrollador Next.js y TypeScript",
+            techExpertise: "Experiencia Técnica", experience: "Experiencia", projects: "Proyectos Clave",
             journey: "Trayectoria y Aspiraciones",
             techList: [
                 "Next.js — Experiencia en la construcción de aplicaciones web modernas y escalables",
@@ -197,21 +161,11 @@ const content = {
         ],
         contactTitle: "Contáctame",
         contactDesc: "¡Me encantaría conocer tu proyecto! ¡Conectemos! 💡",
-        hireMe: "Contrátame",
-        downloadCV: "Descargar CV",
-        sendMessage: "Enviar Mensaje",
+        hireMe: "Contrátame", downloadCV: "Descargar CV", sendMessage: "Enviar Mensaje",
         responseTime: "¡Te responderé en 24 horas! ⏳",
         placeholders: { name: "Tu Nombre", email: "Tu Correo", message: "Tu Mensaje" },
-        iAmText: "Soy",
-        textRotation: ["Diseñador", "Desarrollador"],
-        linkedinText: "Perfil de LinkedIn",
-        githubText: "Portafolio en GitHub",
-        project1Title: "🛍️ Plataforma de Comercio Electrónico",
-        project1Desc: "Next.js, TypeScript, Tailwind CSS — Funcionalidad completa de compras",
-        project2Title: "🛠️ NexTool — Centro de Herramientas Web",
-        project2Desc: "Más de 50 herramientas web gratuitas para desarrolladores y creadores",
-        project3Title: "📊 Tarea",
-        project3Desc: "Esta es mi primera tarea",
+        iAmText: "Soy", textRotation: ["Diseñador", "Desarrollador"],
+        linkedinText: "Perfil de LinkedIn", githubText: "Portafolio en GitHub",
         footer: {
             solutions: "Soluciones", useCases: "Casos de Uso", resources: "Recursos", company: "Compañía",
             explore: "Explorar", about: "Acerca de", careers: "Carreras", contactUs: "Contáctanos",
@@ -221,21 +175,14 @@ const content = {
         },
     },
 
-    /* ── French ── */
     french: {
-        name: "Ibrahim Tayyab Memon",
-        nickname: "(I T)",
+        name: "Ibrahim Tayyab Memon", nickname: "(I T)",
         description: "Développeur full-stack passionné, spécialisé dans les technologies web modernes. Je transforme les idées en solutions numériques évolutives grâce à des outils de pointe.",
         navItems: ["accueil", "compétences", "à propos", "services", "contact"],
-        skillsTitle: "Compétences",
-        aboutTitle: "À Propos de Moi",
+        skillsTitle: "Compétences", aboutTitle: "À Propos de Moi",
         aboutDetails: {
-            location: "Pakistan",
-            education: "Élève de 11e année",
-            profession: "Développeur Next.js & TypeScript",
-            techExpertise: "Expertise Technique",
-            experience: "Expérience",
-            projects: "Projets Clés",
+            location: "Pakistan", education: "Élève de 11e année", profession: "Développeur Next.js & TypeScript",
+            techExpertise: "Expertise Technique", experience: "Expérience", projects: "Projets Clés",
             journey: "Parcours & Aspirations",
             techList: [
                 "Next.js — Expérience dans la création d'applications web modernes et évolutives",
@@ -262,21 +209,11 @@ const content = {
         ],
         contactTitle: "Contactez-moi",
         contactDesc: "J'aimerais en savoir plus sur votre projet ! Connectons-nous ! 💡",
-        hireMe: "Engagez-moi",
-        downloadCV: "Télécharger le CV",
-        sendMessage: "Envoyer le Message",
+        hireMe: "Engagez-moi", downloadCV: "Télécharger le CV", sendMessage: "Envoyer le Message",
         responseTime: "Je vous répondrai sous 24 heures ! ⏳",
         placeholders: { name: "Votre Nom", email: "Votre E-mail", message: "Votre Message" },
-        iAmText: "Je suis",
-        textRotation: ["Designer", "Développeur"],
-        linkedinText: "Profil LinkedIn",
-        githubText: "Portfolio GitHub",
-        project1Title: "🛍️ Plateforme e-Commerce",
-        project1Desc: "Next.js, TypeScript, Tailwind CSS — Fonctionnalité d'achat complète",
-        project2Title: "🛠️ NexTool — Hub d'Outils Web",
-        project2Desc: "Plus de 50 outils web gratuits pour développeurs et créateurs",
-        project3Title: "📊 Devoir",
-        project3Desc: "Ceci est mon premier devoir",
+        iAmText: "Je suis", textRotation: ["Designer", "Développeur"],
+        linkedinText: "Profil LinkedIn", githubText: "Portfolio GitHub",
         footer: {
             solutions: "Solutions", useCases: "Cas d'Utilisation", resources: "Ressources", company: "Entreprise",
             explore: "Explorer", about: "À Propos", careers: "Carrières", contactUs: "Contactez-nous",
@@ -286,21 +223,14 @@ const content = {
         },
     },
 
-    /* ── German ── */
     german: {
-        name: "Ibrahim Tayyab Memon",
-        nickname: "(I T)",
+        name: "Ibrahim Tayyab Memon", nickname: "(I T)",
         description: "Leidenschaftlicher Full-Stack-Entwickler mit Spezialisierung auf moderne Webtechnologien. Ich verwandle Ideen in skalierbare digitale Lösungen mit modernsten Tools.",
         navItems: ["Startseite", "Fähigkeiten", "Über mich", "Leistungen", "Kontakt"],
-        skillsTitle: "Fähigkeiten",
-        aboutTitle: "Über Mich",
+        skillsTitle: "Fähigkeiten", aboutTitle: "Über Mich",
         aboutDetails: {
-            location: "Pakistan",
-            education: "Schüler der 11. Klasse",
-            profession: "Next.js- & TypeScript-Entwickler",
-            techExpertise: "Technische Expertise",
-            experience: "Erfahrung",
-            projects: "Schlüsselprojekte",
+            location: "Pakistan", education: "Schüler der 11. Klasse", profession: "Next.js- & TypeScript-Entwickler",
+            techExpertise: "Technische Expertise", experience: "Erfahrung", projects: "Schlüsselprojekte",
             journey: "Werdegang & Ziele",
             techList: [
                 "Next.js — Erfahrung im Bau moderner, skalierbarer Webanwendungen",
@@ -327,21 +257,11 @@ const content = {
         ],
         contactTitle: "Kontakt aufnehmen",
         contactDesc: "Ich würde gerne mehr über Ihr Projekt erfahren! Lassen Sie uns in Kontakt treten! 💡",
-        hireMe: "Beauftragen",
-        downloadCV: "Lebenslauf herunterladen",
-        sendMessage: "Nachricht senden",
+        hireMe: "Beauftragen", downloadCV: "Lebenslauf herunterladen", sendMessage: "Nachricht senden",
         responseTime: "Ich antworte innerhalb von 24 Stunden! ⏳",
         placeholders: { name: "Ihr Name", email: "Ihre E-Mail", message: "Ihre Nachricht" },
-        iAmText: "Ich bin",
-        textRotation: ["Designer", "Entwickler"],
-        linkedinText: "LinkedIn-Profil",
-        githubText: "GitHub-Portfolio",
-        project1Title: "🛍️ E-Commerce-Plattform",
-        project1Desc: "Next.js, TypeScript, Tailwind CSS — Vollständige Shop-Funktionalität",
-        project2Title: "🛠️ NexTool — Web-Tools-Hub",
-        project2Desc: "Über 50 kostenlose Web-Tools für Entwickler und Kreative",
-        project3Title: "📊 Aufgabe",
-        project3Desc: "Dies ist meine erste Aufgabe",
+        iAmText: "Ich bin", textRotation: ["Designer", "Entwickler"],
+        linkedinText: "LinkedIn-Profil", githubText: "GitHub-Portfolio",
         footer: {
             solutions: "Lösungen", useCases: "Anwendungsfälle", resources: "Ressourcen", company: "Unternehmen",
             explore: "Entdecken", about: "Über uns", careers: "Karriere",
@@ -351,21 +271,14 @@ const content = {
         },
     },
 
-    /* ── Arabic ── */
     arabic: {
-        name: "إبراهيم طيب ميمون",
-        nickname: "(آي تي)",
+        name: "إبراهيم طيب ميمون", nickname: "(آي تي)",
         description: "مطور ويب متكامل وشغوف متخصص في تقنيات الويب الحديثة. أحوّل الأفكار إلى حلول رقمية قابلة للتوسع باستخدام أحدث الأدوات.",
         navItems: ["الرئيسية", "المهارات", "عنّي", "الخدمات", "تواصل"],
-        skillsTitle: "المهارات",
-        aboutTitle: "عنّي",
+        skillsTitle: "المهارات", aboutTitle: "عنّي",
         aboutDetails: {
-            location: "باكستان",
-            education: "طالب في الصف الحادي عشر",
-            profession: "مطور Next.js و TypeScript",
-            techExpertise: "الخبرة التقنية",
-            experience: "الخبرة العملية",
-            projects: "المشاريع الرئيسية",
+            location: "باكستان", education: "طالب في الصف الحادي عشر", profession: "مطور Next.js و TypeScript",
+            techExpertise: "الخبرة التقنية", experience: "الخبرة العملية", projects: "المشاريع الرئيسية",
             journey: "المسيرة والطموحات",
             techList: [
                 "Next.js — خبرة في بناء تطبيقات ويب حديثة وقابلة للتوسع",
@@ -392,21 +305,11 @@ const content = {
         ],
         contactTitle: "تواصل معي",
         contactDesc: "أودّ معرفة المزيد عن مشروعك! دعنا نتواصل! 💡",
-        hireMe: "وظّفني",
-        downloadCV: "تحميل السيرة الذاتية",
-        sendMessage: "إرسال رسالة",
+        hireMe: "وظّفني", downloadCV: "تحميل السيرة الذاتية", sendMessage: "إرسال رسالة",
         responseTime: "سأردّ خلال 24 ساعة! ⏳",
         placeholders: { name: "اسمك", email: "بريدك الإلكتروني", message: "رسالتك" },
-        iAmText: "أنا",
-        textRotation: ["مصمم", "مطوّر"],
-        linkedinText: "ملف LinkedIn الشخصي",
-        githubText: "معرض GitHub",
-        project1Title: "🛍️ منصة تجارة إلكترونية",
-        project1Desc: "Next.js، TypeScript، Tailwind CSS — وظائف تسوّق كاملة",
-        project2Title: "🛠️ نيكس تول — مركز أدوات الويب",
-        project2Desc: "أكثر من 50 أداة ويب مجانية للمطورين والمبدعين",
-        project3Title: "📊 واجب",
-        project3Desc: "هذا هو واجبي الأول",
+        iAmText: "أنا", textRotation: ["مصمم", "مطوّر"],
+        linkedinText: "ملف LinkedIn الشخصي", githubText: "معرض GitHub",
         footer: {
             solutions: "الحلول", useCases: "حالات الاستخدام", resources: "الموارد", company: "الشركة",
             explore: "استكشف", about: "عنّا", careers: "الوظائف", contactUs: "اتصل بنا",
@@ -416,21 +319,14 @@ const content = {
         },
     },
 
-    /* ── Chinese (Simplified) ── */
     chinese: {
-        name: "易卜拉欣·塔亚布·梅蒙",
-        nickname: "(I T)",
+        name: "易卜拉欣·塔亚布·梅蒙", nickname: "(I T)",
         description: "热衷于现代 Web 技术的全栈开发者。利用前沿工具将创意转化为可扩展的数字解决方案。",
         navItems: ["首页", "技能", "关于", "服务", "联系"],
-        skillsTitle: "技能",
-        aboutTitle: "关于我",
+        skillsTitle: "技能", aboutTitle: "关于我",
         aboutDetails: {
-            location: "巴基斯坦",
-            education: "11年级学生",
-            profession: "Next.js 与 TypeScript 开发者",
-            techExpertise: "技术专长",
-            experience: "工作经验",
-            projects: "核心项目",
+            location: "巴基斯坦", education: "11年级学生", profession: "Next.js 与 TypeScript 开发者",
+            techExpertise: "技术专长", experience: "工作经验", projects: "核心项目",
             journey: "成长历程与抱负",
             techList: [
                 "Next.js — 拥有构建现代、可扩展 Web 应用的经验",
@@ -457,21 +353,11 @@ const content = {
         ],
         contactTitle: "联系我",
         contactDesc: "期待了解您的项目！让我们联系吧！💡",
-        hireMe: "雇用我",
-        downloadCV: "下载简历",
-        sendMessage: "发送消息",
+        hireMe: "雇用我", downloadCV: "下载简历", sendMessage: "发送消息",
         responseTime: "我将在 24 小时内回复！⏳",
         placeholders: { name: "您的姓名", email: "您的邮箱", message: "您的留言" },
-        iAmText: "我是",
-        textRotation: ["设计师", "开发者"],
-        linkedinText: "LinkedIn 主页",
-        githubText: "GitHub 作品集",
-        project1Title: "🛍️ 电子商务平台",
-        project1Desc: "Next.js、TypeScript、Tailwind CSS — 完整的购物功能",
-        project2Title: "🛠️ NexTool — Web 工具中心",
-        project2Desc: "为开发者和创作者提供 50 多种免费 Web 工具",
-        project3Title: "📊 作业",
-        project3Desc: "这是我的第一个作业",
+        iAmText: "我是", textRotation: ["设计师", "开发者"],
+        linkedinText: "LinkedIn 主页", githubText: "GitHub 作品集",
         footer: {
             solutions: "解决方案", useCases: "使用场景", resources: "资源", company: "公司",
             explore: "探索", about: "关于", careers: "职业机会", contactUs: "联系我们",
@@ -484,40 +370,22 @@ const content = {
 
 
 /* ──────────────────────────────────────────────────────────────
-   2. SKILLS DATA
-   ────────────────────────────────────────────────────────────── */
-const skills = [
-    { name: { english: "TypeScript", urdu: "ٹائپ اسکرپٹ", spanish: "TypeScript", french: "TypeScript", german: "TypeScript", arabic: "تايب سكريبت", chinese: "TypeScript" }, logo: "assets/images/TypeScript.png" },
-    { name: { english: "JavaScript", urdu: "جاوا اسکرپٹ", spanish: "JavaScript", french: "JavaScript", german: "JavaScript", arabic: "جافا سكريبت", chinese: "JavaScript" }, logo: "assets/images/javascript.png" },
-    { name: { english: "HTML", urdu: "ایچ ٹی ایم ایل", spanish: "HTML", french: "HTML", german: "HTML", arabic: "HTML", chinese: "HTML" }, logo: "assets/images/HTML.png" },
-    { name: { english: "CSS", urdu: "سی ایس ایس", spanish: "CSS", french: "CSS", german: "CSS", arabic: "CSS", chinese: "CSS" }, logo: "assets/images/css.png" },
-    { name: { english: "Next.js", urdu: "نیکسٹ جے ایس", spanish: "Next.js", french: "Next.js", german: "Next.js", arabic: "Next.js", chinese: "Next.js" }, logo: "assets/images/nextjs.png" },
-    { name: { english: "Graphic Design", urdu: "گرافک ڈیزائن", spanish: "Diseño Gráfico", french: "Design Graphique", german: "Grafikdesign", arabic: "تصميم جرافيكي", chinese: "平面设计" }, logo: "assets/images/graphic-design.png" },
-    { name: { english: "Microsoft Excel", urdu: "مائیکروسافٹ ایکسل", spanish: "Microsoft Excel", french: "Microsoft Excel", german: "Microsoft Excel", arabic: "Microsoft Excel", chinese: "Microsoft Excel" }, logo: "assets/images/excel.png" },
-    { name: { english: "Microsoft Word", urdu: "مائیکروسافٹ ورڈ", spanish: "Microsoft Word", french: "Microsoft Word", german: "Microsoft Word", arabic: "Microsoft Word", chinese: "Microsoft Word" }, logo: "assets/images/word.png" },
-    { name: { english: "Tailwind CSS", urdu: "ٹیل ونڈ سی ایس ایس", spanish: "Tailwind CSS", french: "Tailwind CSS", german: "Tailwind CSS", arabic: "Tailwind CSS", chinese: "Tailwind CSS" }, logo: "assets/images/Tailwind CSS.png" },
-    { name: { english: "REST APIs", urdu: "REST APIs", spanish: "APIs REST", french: "API REST", german: "REST-APIs", arabic: "واجهات REST API", chinese: "REST API" }, logo: "assets/images/REST APIs.jpeg" },
-    { name: { english: "Problem Solving", urdu: "مسائل حل کرنا", spanish: "Resolución de Problemas", french: "Résolution de Problèmes", german: "Problemlösung", arabic: "حل المشكلات", chinese: "问题解决" }, logo: "assets/images/Problem Solving.png" },
-    { name: { english: "React.js", urdu: "ری ایکٹ جے ایس", spanish: "React.js", french: "React.js", german: "React.js", arabic: "React.js", chinese: "React.js" }, logo: "assets/images/React.jsds.png" },
-];
-
-
-/* ──────────────────────────────────────────────────────────────
-   3. STATE
+   2. STATE
    ────────────────────────────────────────────────────────────── */
 let currentLanguage = "english";
 let isDarkMode = true;
 let textIndex = 0;
 let textRotationInterval = null;
-let lastScrollY = 0;                  // for scroll-direction detection
+let lastScrollY = 0;
 let mobileMenuOpen = false;
+let skillsExpanded = false;
+const SKILLS_INITIAL_COUNT = 12;
 
 
 /* ──────────────────────────────────────────────────────────────
-   4. INITIALIZATION
+   3. INITIALIZATION
    ────────────────────────────────────────────────────────────── */
 document.addEventListener("DOMContentLoaded", () => {
-    // Restore saved theme
     const savedTheme = localStorage.getItem("portfolio-theme");
     if (savedTheme === "light") {
         isDarkMode = false;
@@ -526,21 +394,14 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("themeIcon").src = "assets/images/moon.png";
     }
 
-    // Render dynamic content
     renderSkills();
+    renderProjects();
     renderServices();
     updatePlaceholders();
-
-    // Start text rotation
     startTextRotation();
-
-    // Setup scroll handling
     setupScrollHandler();
-
-    // Setup IntersectionObserver for scroll animations
     setupScrollAnimations();
 
-    // Close language menu on outside click
     document.addEventListener("click", (e) => {
         const dropdown = document.querySelector(".language-dropdown");
         const menu = document.getElementById("languageMenu");
@@ -552,22 +413,118 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 /* ──────────────────────────────────────────────────────────────
-   5. SKILLS RENDERING
+   4. RENDER SKILLS — reads from SKILLS array (data.js)
+      Shows first 12, hides the rest with .hidden-card class
    ────────────────────────────────────────────────────────────── */
 function renderSkills() {
     const grid = document.getElementById("skillsGrid");
     if (!grid) return;
-    grid.innerHTML = skills.map((skill, i) => `
-    <div class="skill-card" style="transition-delay: ${i * 80}ms">
-      <img src="${skill.logo}" alt="${skill.name[currentLanguage]}" class="skill-logo" loading="lazy" width="64" height="64">
-      <div class="skill-name">${skill.name[currentLanguage]}</div>
-    </div>
+
+    grid.innerHTML = SKILLS.map((skill, i) => {
+        const isHidden = i >= SKILLS_INITIAL_COUNT && !skillsExpanded;
+        return `
+      <div class="skill-card ${isHidden ? 'hidden-card' : ''}" 
+           data-index="${i}"
+           style="transition-delay: ${(i % SKILLS_INITIAL_COUNT) * 60}ms">
+        <img src="${skill.icon}" 
+             alt="${skill.name[currentLanguage]}" 
+             class="skill-logo" 
+             loading="lazy" width="64" height="64"
+             onerror="this.style.display='none'">
+        <div class="skill-name">${skill.name[currentLanguage]}</div>
+      </div>
+    `;
+    }).join("");
+
+    // Update button text and visibility
+    const btn = document.getElementById("showMoreBtn");
+    if (btn) {
+        btn.style.display = SKILLS.length <= SKILLS_INITIAL_COUNT ? "none" : "inline-block";
+        const labels = UI_LABELS;
+        btn.textContent = skillsExpanded
+            ? labels.showLess[currentLanguage]
+            : labels.showMore[currentLanguage];
+    }
+
+    // Re-observe for scroll animations
+    setupScrollAnimations();
+}
+
+
+/* ──────────────────────────────────────────────────────────────
+   5. RENDER PROJECTS — reads from PROJECTS array (data.js)
+      Just add objects to PROJECTS[] to add more projects.
+   ────────────────────────────────────────────────────────────── */
+function renderProjects() {
+    const grid = document.getElementById("projectsGrid");
+    if (!grid) return;
+
+    grid.innerHTML = PROJECTS.map((project) => `
+    <a href="${project.link}" target="_blank" rel="noopener noreferrer" class="project-card">
+      <div class="project-image-wrapper">
+        <img src="${project.image}" 
+             alt="${project.title[currentLanguage]}" 
+             class="project-image" 
+             loading="lazy">
+        <div class="project-image-overlay" aria-hidden="true"></div>
+      </div>
+      <div class="project-info">
+        <h4>${project.title[currentLanguage]}</h4>
+        <p>${project.desc[currentLanguage]}</p>
+      </div>
+    </a>
   `).join("");
 }
 
 
 /* ──────────────────────────────────────────────────────────────
-   6. SERVICES RENDERING
+   6. SHOW MORE / SHOW LESS TOGGLE
+   ────────────────────────────────────────────────────────────── */
+function toggleShowMore() {
+    skillsExpanded = !skillsExpanded;
+
+    const hiddenCards = document.querySelectorAll('.skill-card[data-index]');
+    const btn = document.getElementById("showMoreBtn");
+
+    hiddenCards.forEach(card => {
+        const idx = parseInt(card.dataset.index);
+        if (idx >= SKILLS_INITIAL_COUNT) {
+            if (skillsExpanded) {
+                // Reveal: remove hidden-card, trigger animation
+                card.classList.remove("hidden-card");
+                // Force reflow so IntersectionObserver picks them up
+                requestAnimationFrame(() => {
+                    card.classList.add("animate-in");
+                });
+            } else {
+                // Hide: add hidden-card back
+                card.classList.remove("animate-in");
+                card.classList.add("hidden-card");
+            }
+        }
+    });
+
+    // Update button text
+    if (btn) {
+        btn.textContent = skillsExpanded
+            ? UI_LABELS.showLess[currentLanguage]
+            : UI_LABELS.showMore[currentLanguage];
+    }
+
+    // Scroll to keep button in view when collapsing
+    if (!skillsExpanded) {
+        const skillsSection = document.getElementById("skills");
+        if (skillsSection) {
+            setTimeout(() => {
+                skillsSection.scrollIntoView({ behavior: "smooth", block: "start" });
+            }, 300);
+        }
+    }
+}
+
+
+/* ──────────────────────────────────────────────────────────────
+   7. SERVICES RENDERING
    ────────────────────────────────────────────────────────────── */
 function renderServices() {
     const grid = document.getElementById("servicesGrid");
@@ -588,19 +545,18 @@ function renderServices() {
 
 
 /* ──────────────────────────────────────────────────────────────
-   7. LANGUAGE SYSTEM
+   8. LANGUAGE SYSTEM
    ────────────────────────────────────────────────────────────── */
 function setLanguage(lang) {
     currentLanguage = lang;
     const c = content[lang];
     const isRTL = lang === "urdu" || lang === "arabic";
 
-    // Direction & lang attribute
     document.documentElement.dir = isRTL ? "rtl" : "ltr";
     const langCodes = { english: "en", urdu: "ur", spanish: "es", french: "fr", german: "de", arabic: "ar", chinese: "zh" };
     document.documentElement.lang = langCodes[lang] || "en";
 
-    // Nav items (desktop + mobile)
+    // Nav items
     const navBtns = document.querySelectorAll("#navLinks li button");
     const mobBtns = document.querySelectorAll("#mobileMenu button");
     c.navItems.forEach((item, i) => {
@@ -630,12 +586,6 @@ function setLanguage(lang) {
     document.getElementById("experienceDesc").textContent = c.aboutDetails.experienceDesc;
     document.getElementById("experienceList").innerHTML = c.aboutDetails.experienceList.map(t => `<li>${t}</li>`).join("");
     document.getElementById("projectsTitle").textContent = c.aboutDetails.projects;
-    document.getElementById("project1Title").textContent = c.project1Title;
-    document.getElementById("project1Desc").textContent = c.project1Desc;
-    document.getElementById("project2Title").textContent = c.project2Title;
-    document.getElementById("project2Desc").textContent = c.project2Desc;
-    document.getElementById("project3Title").textContent = c.project3Title;
-    document.getElementById("project3Desc").textContent = c.project3Desc;
     document.getElementById("journeyTitle").textContent = c.aboutDetails.journey;
     document.getElementById("journeyQuote").textContent = c.aboutDetails.journeyQuote;
     document.getElementById("futureFocus").textContent = c.aboutDetails.futureFocus;
@@ -669,21 +619,18 @@ function setLanguage(lang) {
     // Placeholders
     updatePlaceholders();
 
-    // Re-render dynamic grids
+    // Re-render dynamic content (skills, projects, services update language)
     renderSkills();
+    renderProjects();
     renderServices();
     setupScrollAnimations();
 
-    // Update dropdown display
+    // Update dropdown
     const langLabels = { english: "English", urdu: "اردو", spanish: "Español", french: "Français", german: "Deutsch", arabic: "العربية", chinese: "中文" };
     document.getElementById("languageBtn").textContent = (langLabels[lang] || lang) + " ▼";
-
-    // Active state in menu
     document.querySelectorAll(".language-menu button").forEach(btn => {
         btn.classList.toggle("active", btn.dataset.lang === lang);
     });
-
-    // Close menu
     document.getElementById("languageMenu").classList.remove("open");
 
     // Restart text rotation
@@ -703,22 +650,19 @@ function updatePlaceholders() {
 
 
 /* ──────────────────────────────────────────────────────────────
-   8. DARK / LIGHT MODE
+   9. DARK / LIGHT MODE
    ────────────────────────────────────────────────────────────── */
 function toggleDarkMode() {
     isDarkMode = !isDarkMode;
-    const body = document.body;
-    const icon = document.getElementById("themeIcon");
-
-    body.classList.toggle("dark-mode", isDarkMode);
-    body.classList.toggle("light-mode", !isDarkMode);
-    icon.src = isDarkMode ? "assets/images/sun.png" : "assets/images/moon.png";
+    document.body.classList.toggle("dark-mode", isDarkMode);
+    document.body.classList.toggle("light-mode", !isDarkMode);
+    document.getElementById("themeIcon").src = isDarkMode ? "assets/images/sun.png" : "assets/images/moon.png";
     localStorage.setItem("portfolio-theme", isDarkMode ? "dark" : "light");
 }
 
 
 /* ──────────────────────────────────────────────────────────────
-   9. LANGUAGE MENU
+   10. LANGUAGE MENU
    ────────────────────────────────────────────────────────────── */
 function toggleLanguageMenu() {
     document.getElementById("languageMenu").classList.toggle("open");
@@ -726,7 +670,7 @@ function toggleLanguageMenu() {
 
 
 /* ──────────────────────────────────────────────────────────────
-   10. MOBILE HAMBURGER MENU
+   11. MOBILE HAMBURGER MENU
    ────────────────────────────────────────────────────────────── */
 function toggleMobileMenu() {
     mobileMenuOpen = !mobileMenuOpen;
@@ -736,37 +680,32 @@ function toggleMobileMenu() {
 }
 
 function mobileScrollTo(id) {
-    toggleMobileMenu();                           // close menu first
-    setTimeout(() => scrollToSection(id), 300);   // wait for animation
+    toggleMobileMenu();
+    setTimeout(() => scrollToSection(id), 300);
 }
 
 
 /* ──────────────────────────────────────────────────────────────
-   11. SCROLL HANDLING — Direction-aware navbar + progress bar
+   12. SCROLL HANDLING
    ────────────────────────────────────────────────────────────── */
 function setupScrollHandler() {
     let ticking = false;
-
     window.addEventListener("scroll", () => {
         if (!ticking) {
             window.requestAnimationFrame(() => {
                 const scrollTop = window.scrollY;
-
-                // ── Progress bar ──
                 const docHeight = document.documentElement.scrollHeight - window.innerHeight;
                 const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
                 document.getElementById("scrollProgressBar").style.width = progress + "%";
 
-                // ── Navbar: show on scroll-up, hide on scroll-down (after 80px) ──
                 const navbar = document.getElementById("navbar");
                 if (scrollTop <= 80) {
-                    navbar.classList.remove("hidden-nav");       // always show at top
+                    navbar.classList.remove("hidden-nav");
                 } else if (scrollTop > lastScrollY + 5) {
-                    navbar.classList.add("hidden-nav");           // scrolling DOWN
+                    navbar.classList.add("hidden-nav");
                 } else if (scrollTop < lastScrollY - 5) {
-                    navbar.classList.remove("hidden-nav");        // scrolling UP
+                    navbar.classList.remove("hidden-nav");
                 }
-
                 lastScrollY = scrollTop;
                 ticking = false;
             });
@@ -777,22 +716,19 @@ function setupScrollHandler() {
 
 
 /* ──────────────────────────────────────────────────────────────
-   12. SMOOTH SCROLL
+   13. SMOOTH SCROLL
    ────────────────────────────────────────────────────────────── */
 function scrollToSection(id) {
     const section = document.getElementById(id);
-    if (section) {
-        section.scrollIntoView({ behavior: "smooth", block: "start" });
-    }
+    if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 
 /* ──────────────────────────────────────────────────────────────
-   13. TEXT ROTATION — Designer ↔ Developer
+   14. TEXT ROTATION
    ────────────────────────────────────────────────────────────── */
 function startTextRotation() {
     if (textRotationInterval) clearInterval(textRotationInterval);
-
     const el = document.getElementById("rotatingText");
     if (!el) return;
 
@@ -804,14 +740,10 @@ function startTextRotation() {
 
     textRotationInterval = setInterval(() => {
         textIndex = (textIndex + 1) % texts.length;
-
-        // Fade out
         el.style.opacity = "0";
         el.style.transform = "translateY(10px)";
-
         setTimeout(() => {
             el.textContent = texts[textIndex];
-            // Fade in
             el.style.opacity = "1";
             el.style.transform = "translateY(0)";
         }, 250);
@@ -820,7 +752,7 @@ function startTextRotation() {
 
 
 /* ──────────────────────────────────────────────────────────────
-   14. CV DOWNLOAD
+   15. CV DOWNLOAD
    ────────────────────────────────────────────────────────────── */
 function downloadCV() {
     const a = document.createElement("a");
@@ -833,22 +765,21 @@ function downloadCV() {
 
 
 /* ──────────────────────────────────────────────────────────────
-   15. SCROLL-TRIGGERED ANIMATIONS (IntersectionObserver)
+   16. SCROLL-TRIGGERED ANIMATIONS
    ────────────────────────────────────────────────────────────── */
 function setupScrollAnimations() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
+            if (entry.isIntersecting && !entry.target.classList.contains("hidden-card")) {
                 entry.target.classList.add("animate-in");
                 observer.unobserve(entry.target);
             }
         });
-    }, {
-        threshold: 0.15,
-        rootMargin: "0px 0px -40px 0px",
-    });
+    }, { threshold: 0.15, rootMargin: "0px 0px -40px 0px" });
 
-    document.querySelectorAll(".skill-card, .service-card").forEach(el => {
-        observer.observe(el);
+    document.querySelectorAll(".skill-card:not(.hidden-card), .service-card").forEach(el => {
+        if (!el.classList.contains("animate-in")) {
+            observer.observe(el);
+        }
     });
 }

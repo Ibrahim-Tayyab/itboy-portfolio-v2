@@ -677,6 +677,43 @@ textarea {
   font-weight: 600;
 }
 
+/* Hidden skill cards (Show More / Show Less) */
+.skill-card.hidden-card {
+  max-height: 0;
+  padding: 0 0.75rem;
+  margin: 0;
+  opacity: 0;
+  overflow: hidden;
+  border: none;
+  transition: max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease;
+}
+
+.skill-card.hidden-card.animate-in {
+  opacity: 0;
+  transform: translateY(0);
+}
+
+/* Show More / Show Less button */
+.show-more-btn {
+  display: inline-block;
+  margin-top: 1.5rem;
+  padding: 0.5rem 2rem;
+  border-radius: 50px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #fff;
+  background: linear-gradient(to right, var(--green-500), var(--blue-500));
+  cursor: pointer;
+  border: none;
+  transition: transform var(--transition-normal),
+    box-shadow var(--transition-normal);
+}
+
+.show-more-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(34, 197, 94, 0.3);
+}
+
 
 /* ==========================================================
    11. About Section
