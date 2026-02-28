@@ -1,0 +1,136 @@
+name: ⚡ Audit & Validate
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  Runs on every Pull Request to main:
+#    Job 1 — W3C HTML Validation
+#    Job 2 — Lighthouse Performance Audit
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'vanilla/**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  # ────────────────────────────────
+  # JOB 1: HTML & CSS Validation
+  # ────────────────────────────────
+  validate:
+    name: 🔍 W3C Validation
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📦 Install html-validate
+        run: npm install -g html-validate
+
+      - name: 🔍 Validate HTML
+        run: |
+          echo "### 🔍 HTML Validation Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          FAIL=0
+          for file in vanilla/index.html vanilla/contact.html; do
+            echo "── Validating $file ──"
+            if html-validate "$file" --formatter stylish 2>&1; then
+              echo "| \`$file\` | ✅ Valid |" >> $GITHUB_STEP_SUMMARY
+            else
+              echo "| \`$file\` | ⚠️ Issues found |" >> $GITHUB_STEP_SUMMARY
+              FAIL=1
+            fi
+          done
+
+          if [ "$FAIL" -eq 0 ]; then
+            echo "" >> $GITHUB_STEP_SUMMARY
+            echo "✅ All HTML files passed validation." >> $GITHUB_STEP_SUMMARY
+          fi
+
+      - name: 🔗 Verify asset references
+        run: |
+          echo ""
+          echo "── Checking internal asset references ──"
+          cd vanilla
+          MISSING=0
+
+          for file in index.html contact.html; do
+            grep -oP '(?:src|href)="(?!https?://|mailto:|tel:|#|javascript:)([^"]+)"' "$file" | \
+            sed 's/.*="\(.*\)"/\1/' | sort -u | while read -r ref; do
+              if [ ! -f "$ref" ] && [ ! -f "../$ref" ]; then
+                echo "❌ MISSING: $ref (in $file)"
+                MISSING=1
+              fi
+            done
+          done
+
+          if [ "$MISSING" -eq 0 ]; then
+            echo "✅ All internal references resolved."
+          fi
+
+  # ────────────────────────────────
+  # JOB 2: Lighthouse Performance
+  # ────────────────────────────────
+  lighthouse:
+    name: ⚡ Lighthouse CI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout
+        uses: actions/checkout@v4
+
+      - name: 🟢 Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: 📦 Install tools
+        run: |
+          npm install -g @lhci/cli http-server
+
+      - name: 🏗️ Start server & run audit
+        run: |
+          # Serve the vanilla directory
+          http-server vanilla -p 9222 -c-1 --silent &
+          sleep 3
+
+          # Run Lighthouse against both pages
+          lhci autorun \
+            --collect.url="http://localhost:9222/index.html" \
+            --collect.url="http://localhost:9222/contact.html" \
+            --collect.numberOfRuns=1 \
+            --collect.settings.chromeFlags="--no-sandbox --headless --disable-gpu" \
+            --upload.target=temporary-public-storage \
+            2>&1 | tee lighthouse-output.txt || true
+
+          # Kill server
+          kill %1 2>/dev/null || true
+
+      - name: 📊 Write Lighthouse summary
+        if: always()
+        run: |
+          echo "### ⚡ Lighthouse Audit Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Page | Report |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+
+          # Extract report URLs from output
+          if [ -f lighthouse-output.txt ]; then
+            grep -oP 'https://storage\.googleapis\.com[^\s]+' lighthouse-output.txt | while read -r url; do
+              echo "| 📄 | [View Report]($url) |" >> $GITHUB_STEP_SUMMARY
+            done
+          fi
+
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "> Reports are hosted on temporary public storage for 7 days." >> $GITHUB_STEP_SUMMARY

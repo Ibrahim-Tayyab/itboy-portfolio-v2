@@ -1,0 +1,64 @@
+name: 🚀 Deploy to GitHub Pages
+
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+#  Deploys the /vanilla directory to GitHub Pages
+#  on every push to the main branch.
+#
+#  Setup (one-time):
+#    Repo → Settings → Pages → Source → GitHub Actions
+# ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'vanilla/**'    # Only deploy when vanilla/ changes
+  workflow_dispatch:     # Allow manual trigger from Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: 🌐 Deploy
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: 📥 Checkout repository
+        uses: actions/checkout@v4
+
+      - name: ⚙️ Configure Pages
+        uses: actions/configure-pages@v5
+
+      # Upload ONLY the vanilla/ folder — ignores Next.js root entirely
+      - name: 📦 Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: vanilla
+
+      - name: 🚀 Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: ✅ Deployment summary
+        run: |
+          echo "### 🌐 Deployment Successful!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "**URL:** ${{ steps.deployment.outputs.page_url }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| File | Status |" >> $GITHUB_STEP_SUMMARY
+          echo "|------|--------|" >> $GITHUB_STEP_SUMMARY
+          echo "| index.html | ✅ Deployed |" >> $GITHUB_STEP_SUMMARY
+          echo "| contact.html | ✅ Deployed |" >> $GITHUB_STEP_SUMMARY
+          echo "| css/styles.css | ✅ Deployed |" >> $GITHUB_STEP_SUMMARY
+          echo "| js/app.js | ✅ Deployed |" >> $GITHUB_STEP_SUMMARY
+          echo "| js/contact.js | ✅ Deployed |" >> $GITHUB_STEP_SUMMARY
